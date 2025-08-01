@@ -1,0 +1,95 @@
+Kubernetes
+
+Kubernetes - K8S
+	Container management tool
+	Container: Docker
+	Management: Deploying, Scheduling, Scaling, Load Balancing, Batch Execution, Roll back, Monitoring, Automatic bean packing, Self healing
+	Tool: Kubernetes
+	
+K8S Components
+	POD
+	NODE
+	CLUSTER
+	REPLICATION CONTROLLER REPLICA SET
+	SERVICE: DNS, Service Type: Cluster IP, NodePort, LoadBalancer
+	DEPLOYMENT
+	SECREATS: Encrypted text
+	CONFIG MAP: Plain text
+	ETCD: Database to store all secreat and Config data as key-value. Max limit is 1 mb to store secrets.
+	
+Minikube setup steps in windows
+	install kubectl: https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/
+	install Minikube: https://v1-18.docs.kubernetes.io/docs/tasks/tools/install-minikube/
+	install Docker Desktop : https://docs.docker.com/desktop/windows/install/
+	Download VirtualBox : https://www.virtualbox.org/wiki/Downloads
+	
+	choco install kubernetes-cli
+	curl.exe -LO "https://dl.k8s.io/release/v1.33.0/bin/windows/amd64/kubectl.exe"
+	choco install mysql -y
+	kubectl cluster-info
+	kubectl version --client
+	choco install minikube
+	minikube version
+	start docker
+	minikube start
+	minikube status
+	kubectl cluster-info
+	kubectl get node
+	
+	create spring-boot-docker-k8s using spring-boot
+	add Dockerfile content
+	docker build -t spring-boot-docker-k8s:1.0 .
+	kubectl create deployment springboot-docker-k8s --image=spring-boot-docker-k8s:1.0 --port=8080
+	kubectl delete deployment springboot-docker-k8s
+	kubectl get deployment
+	kubectl describe deployment springboot-docker-k8s
+	kubectl get pods
+	kubectl describe pod springboot-docker-k8s-986c67878-4fbxk
+		if Message is
+			Error: ImagePullBackOff
+			Failed to pull image "spring-boot-docker-k8s:1.0": Error response from daemon: pull access denied for spring-boot-docker-k8s, 
+			repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+		then execute
+			minikube image load spring-boot-docker-k8s:1.0
+	kubectl logs springboot-docker-k8s-986c67878-4fbxk
+	docker tag spring-boot-docker-k8s:1.0 repository/spring-boot-docker-k8s:1.0
+	docker push repository/spring-boot-docker-k8s:1.0
+	kubectl expose deployment spring-boot-docker-k8s --type=NodePort
+	kubectl get service
+	minikube service spring-boot-docker-k8s --url
+	minikube dashboard
+	minikube addons enable metrics-server
+	
+	Cleaneup
+	kubectl delete service spring-boot-docker-k8s
+	kubectl delete deployment spring-boot-docker-k8s
+	kubectl get pods
+	kubectl get svc
+	kubectl get deployments
+	minikube stop
+	kubectl get nodes
+	minikube delete
+	
+	https://medium.com/@javatechie/kubernetes-tutorial-setup-kubernetes-in-windows-run-spring-boot-application-on-k8s-cluster-c6cab8f7de5a
+	
+	kubectl apply -f k8s-service.yml
+	kubectl apply -f k8s-deployment.yml
+	kubectl get service/svc
+	kubectl get nodes -o wide
+	minikube ip
+	kubectl port-forward service/spring-boot-docker-k8s-service 8080:8080
+	
+	kubectl exec -it mysql-db4bc554b-g49cs -- /bin/bash
+	
+	
+	synch both docker & minikube: & minikube -p minikube docker-env --shell powershell | Invoke-Expression
+	minikube service spring-boot-crud-svc
+	minikube service spring-boot-crud-svc --url
+	minikube ssh curl http://localhost:32610/employees
+	minikube ssh curl http://192.168.49.2:32610/employees
+	
+	IP under EXTERNAL-IP
+	spec:type: LoadBalancer
+	minikube tunnel
+	kubectl get svc
+	You’ll see an IP under EXTERNAL-IP that is accessible in the browser.
