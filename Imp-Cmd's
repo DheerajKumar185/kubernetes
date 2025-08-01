@@ -93,3 +93,6 @@ Minikube setup steps in windows
 	minikube tunnel
 	kubectl get svc
 	You’ll see an IP under EXTERNAL-IP that is accessible in the browser.
+
+	//base64 encoder
+	[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("root"))
